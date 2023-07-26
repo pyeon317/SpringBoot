@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body th:fragment="함수명(section1)">
+	
+	<header>
+		<h3>이거는 템플릿 파일</h3>
+		head
+	</header>
+	
+	<section>
+		<th:block th:replace="${section1}"></th:block>
+	</section>
+	
+	<footer>
+		foot
+	</footer>
+</body>
+</html>
