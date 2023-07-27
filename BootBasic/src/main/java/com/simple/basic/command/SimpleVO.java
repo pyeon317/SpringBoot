@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SimpleVO {
-
 	private int sno;
 	private String first; //성
 	private String last; //이름
