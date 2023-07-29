@@ -18,7 +18,7 @@
 						</div>
 					</div>
                     <div class="page_title">게시글 연습 > <span class="page_subtitle">글수정/삭제</span></div>
-                    <form name="#####" action="#####" method="post">
+                    <form name="modifyForm" action="topic_modifyForm" method="post">
                         <div class="full_collum collum">
                             <ul>
                                 <li class="collum_tit">
@@ -37,7 +37,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>아이디</th>
-                                                    <td><input type="text" class="inputw150" name="####"></td>
+                                                    <td><input type="text" class="inputw150" name="####" readonly>[[${vo.writer}]]</td>
                                                 </tr>
 
                                                 <tr>
