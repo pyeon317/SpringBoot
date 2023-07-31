@@ -24,4 +24,26 @@ CREATE TABLE TOPIC(
     TOP_WRITER VARCHAR(20),		## 작성자 FK
     TOP_TITLE VARCHAR(20),		## 카테고리 키
     TOP_CONTENT VARCHAR(5000), 		##내용
-);
+)
+
+# mysql subquery
+
+
+select *
+from(
+	select @rownum := @rownum + 1 as rn,
+		a.*
+	from (
+		select * from product order by prod_id desc
+	)as a, (select @rownum := 0) as b
+) as c
+where rn > 20 and rn <= 30;
+
+
+#mysql limit
+select * from product 
+-- where prod_writer = 'admin' limit 0, 10
+order by prod_id desc
+limit 0, 20; #데이터의 시작 데이터의 개수
+
+

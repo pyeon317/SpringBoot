@@ -2,3 +2,59 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.coding404.myweb.product.service.TopicMapper">
+  	
+  	<insert id="topicRegist" parameterType="TopicVO">
+  		insert into product(top_regdate,
+  							top_writer,
+  							top_title,
+  							top_content
+  							)
+  		values(#{prod_enddate},
+  			   #{prod_writer},
+  			   #{prod_name},
+  			   #{prod_price},
+  			   #{prod_count},
+  			   #{prod_discount},
+  			   #{prod_purchase_yn},
+  			   #{prod_content},
+  			   #{prod_comment}
+  			  )
+  	</insert>
+  	
+  	<select id="getListAll" resultType="TopicVO">
+  		select * from product
+  	</select>
+  	
+  	<select id="getListMe" resultType="TopicVO">
+  		select * from product where prod_writer = #{writer}
+  	</select>
+  	
+  	<select id="getDetail" resultType="TopicVO">
+  		select * from product where prod_id = #{prod_id}
+  	</select>
+  	
+  	<update id="topicModify" parameterType="TopicVO">
+  		update  product set prod_enddate = #{prod_enddate},
+  							prod_name = #{prod_name},
+  							prod_price = #{prod_price},
+  							prod_count = #{prod_count},
+  							prod_discount = #{prod_discount},
+  							prod_purchase_yn = #{prod_purchase_yn},
+  							prod_content = #{prod_content},
+  							prod_comment = #{prod_comment}
+  							where prod_id = #{prod_id} and prod_writer = #{prod_writer}
+  	</update>
+  	
+  	<select id="topicDelete">
+  		delete from product where prod_id = #{prod_id}
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  </mapper>
+  
