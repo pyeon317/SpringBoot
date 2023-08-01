@@ -7,48 +7,39 @@
   	
   	<insert id="topicRegist" parameterType="TopicVO">
   		insert into product(top_regdate,
+  							top_enddate,
   							top_writer,
   							top_title,
   							top_content
   							)
-  		values(#{prod_enddate},
-  			   #{prod_writer},
-  			   #{prod_name},
-  			   #{prod_price},
-  			   #{prod_count},
-  			   #{prod_discount},
-  			   #{prod_purchase_yn},
-  			   #{prod_content},
-  			   #{prod_comment}
+  		values(#{top_regdate},
+  			   #{top_enddate},
+  			   #{top_writer},
+  			   #{top_title},
+  			   #{top_content}
   			  )
   	</insert>
   	
   	<select id="getListAll" resultType="TopicVO">
-  		select * from product
+  		select * from topic
   	</select>
   	
   	<select id="getListMe" resultType="TopicVO">
-  		select * from product where prod_writer = #{writer}
+  		select * from topic where top_writer = #{writer}
   	</select>
   	
   	<select id="getDetail" resultType="TopicVO">
-  		select * from product where prod_id = #{prod_id}
+  		select * from topic where top_id = #{top_id}
   	</select>
   	
   	<update id="topicModify" parameterType="TopicVO">
-  		update  product set prod_enddate = #{prod_enddate},
-  							prod_name = #{prod_name},
-  							prod_price = #{prod_price},
-  							prod_count = #{prod_count},
-  							prod_discount = #{prod_discount},
-  							prod_purchase_yn = #{prod_purchase_yn},
-  							prod_content = #{prod_content},
-  							prod_comment = #{prod_comment}
-  							where prod_id = #{prod_id} and prod_writer = #{prod_writer}
+  		update topic set top_enddate,
+  						 top_title,
+  						 top_content 
   	</update>
   	
   	<select id="topicDelete">
-  		delete from product where prod_id = #{prod_id}
+  		delete from product where top_id = #{top_id}
   	</select>
   	
   	
