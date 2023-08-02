@@ -15,7 +15,6 @@ public class TopicVO {
 
 	private Integer top_id;//글번호,pk
 	private LocalDateTime top_regdate; //등록일
-	private String top_enddate; //종료일- 별 의미는 없는데 그냥 냅두자
 	private String top_writer; //작성자
 	private String top_title; //제목
 	private String top_content; //내용

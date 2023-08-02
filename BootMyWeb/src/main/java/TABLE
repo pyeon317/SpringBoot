@@ -20,10 +20,9 @@ update  product set prod_price = 10, prod_count = 10 where prod_id = 1; #업데�
 CREATE TABLE TOPIC(
     TOP_ID INT PRIMARY KEY AUTO_INCREMENT, 	## PK (자동증가값)
     TOP_REGDATE TIMESTAMP DEFAULT NOW(), 	## 등록일 (기본값 시간형)
-    TOP_ENDDATE VARCHAR(20),		## 판매종료일 (문자형 시간)
     TOP_WRITER VARCHAR(20),		## 작성자 FK
     TOP_TITLE VARCHAR(20),		## 카테고리 키
-    TOP_CONTENT VARCHAR(5000), 		##내용
+    TOP_CONTENT VARCHAR(5000)		##내용
 )
 
 # mysql subquery

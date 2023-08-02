@@ -176,7 +176,7 @@ public class RestBasicController {
 //		
 //		return new SimpleVO(2,"이","순신",LocalDateTime.now());
 //	}
-	
+	@CrossOrigin("*")
 	@GetMapping("/api/v1/getData/{num}/{name}")
 	public ResponseEntity<SimpleVO> getFetch( @PathVariable("num") int num,
 											  @PathVariable("name") String name) {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coding404.myweb.command.TopicVO;
 import com.coding404.myweb.product.service.TopicService;
@@ -53,7 +54,12 @@ public class TopicController {
 	}
 	
 	@PostMapping("topic_regForm")
-	public String topic_regForm() {
+	public String topic_regForm(TopicVO vo, RedirectAttributes ra) {
+		
+		int result = topicService.topicRegist(vo);
+		
+		System.out.println(result);
+		
 		return "redirect:/practice1/topicListAll";
 	}
 	
