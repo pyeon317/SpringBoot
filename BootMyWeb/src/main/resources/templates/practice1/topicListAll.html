@@ -76,16 +76,16 @@
 												<th>등록일</th>
 											</tr>
 												
-											<tr>
-												<td>1</td>
-												<td>admin</td>
-												<td>오늘은 해가뜨려나?</td>
+											<tr th:each="vo, status : ${list}">
+												<td>[[${status.count}]]</td>
+												<td>[[${vo.top_writer}]]</td>
 												<td>
-													<a title="상세보기(클릭)" href="#">오늘은 비가오려나?</a>
+													<a title="상세보기(클릭)" href="#">[[${vo.top_title}]]</a>
 												</td>
-												<td>2016-01-01</td>
+												<td>[[${vo.top_content}]]</td>
+												<td>[[${ vo.top_regdate == null ? '없음' : #temporals.format(vo.top_regdate, 'yy년 MM월 dd일 hh시 mm분 ss초' ) }]]</td>
 											</tr>
-
+										<!--
                                             <tr>
 												<td>1</td>
 												<td>coding404</td>
@@ -95,6 +95,7 @@
 												</td>
 												<td>2016-01-01</td>
 											</tr>
+										-->
 										</table>
 
 

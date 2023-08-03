@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coding404.myweb.command.TopicVO;
 import com.coding404.myweb.product.service.TopicService;
+import com.coding404.myweb.util.Criteria;
+import com.coding404.myweb.util.PageVO;
 
 @Controller
 public class TopicController {
@@ -18,18 +21,36 @@ public class TopicController {
 	@Autowired
 	TopicService topicService;
 	
-	@GetMapping({"/topicListAll", "/ListAll", "/listall"})
-	public String listAll() {
+	@GetMapping({"/topicListAll", "/ListAll", "/listall", "/topicListall"})
+	public String listAll(Model model, Criteria cri) {
 		
-		//ArrayList<TopicVO vo>listAll = topicService.getListAll(top_id);
+		
+		ArrayList<TopicVO>listAll = topicService.getListAll();
+		model.addAttribute("list", listAll);
+		
+//		int total = productService.getTotal(writer, cri);
+//		PageVO pageVO = new PageVO(cri, total);
+//		
+//		model.addAttribute("list", list);
+//		model.addAttribute("pageVO", pageVO);
 		
 		return "practice1/topicListAll";
 	}
 	
-	@GetMapping({"/topicListMe", "/ListMe", "/listme"})
-	public String listMe() {
+	@GetMapping({"/topicListMe", "/ListMe", "/listme", "/topicListme"})
+	public String listMe(Model model, Criteria cri) {
 		
-		//ArrayList<TopicVO vo> listMe = topicService.getListMe(top_writer);
+		//로그인 기능이 없으므로, admin이라는 계정기반으로 조회
+		String writer = "admin";
+		
+		ArrayList<TopicVO> listMe = topicService.getListMe(writer);
+		model.addAttribute("list", listMe);
+		
+//		int total = productService.getTotal(writer, cri);
+//		PageVO pageVO = new PageVO(cri, total);
+//		
+//		model.addAttribute("list", list);
+//		model.addAttribute("pageVO", pageVO);
 		
 		return "practice1/topicListMe";
 	}
@@ -48,7 +69,7 @@ public class TopicController {
 		return "practice1/topicDetail";
 	}
 	
-	@GetMapping({"/topicReg", "/Reg", "/reg"})
+	@GetMapping({"/topicReg", "/Reg", "/reg", "topicreg"})
 	public String reg() {
 		return "practice1/topicReg";
 	}
@@ -60,7 +81,7 @@ public class TopicController {
 		
 		System.out.println(result);
 		
-		return "redirect:/practice1/topicListAll";
+		return "redirect:/topicListAll";
 	}
 	
 	@PostMapping("topic_modifyForm")

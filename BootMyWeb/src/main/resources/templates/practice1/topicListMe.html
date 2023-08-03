@@ -46,14 +46,14 @@
 												<th>수정/삭제</th>
 											</tr>
 												
-											<tr>
-												<td>1</td>
-												<td>admin</td>
-												<td>오늘은 해가뜨려나?</td>
+											<tr th:each="vo, status : ${list}">
+												<td>[[${status.count}]]</td>
+												<td>[[${vo.top_writer}]]</td>
 												<td>
-													오늘은 비가오려나?
+													<a title="상세보기(클릭)" href="#">[[${vo.top_title}]]</a>
 												</td>
-												<td>2016-01-01</td>
+												<td>[[${vo.top_content}]]</td>
+												<td>[[${ vo.top_regdate == null ? '없음' : #temporals.format(vo.top_regdate, 'yyyy-MM-dd / hh : mm : ss' ) }]]</td>
 												<td>
                                                     <a href="#">수정</a>
                                                     /

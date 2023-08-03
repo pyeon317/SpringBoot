@@ -6,13 +6,11 @@
   <mapper namespace="com.coding404.myweb.product.service.TopicMapper">
   	
   	<insert id="topicRegist" parameterType="TopicVO">
-  		insert into product(top_regdate,
-  							top_writer,
-  							top_title,
-  							top_content
+  		insert into topic(top_writer,
+  						  top_title,
+  						  top_content
   							)
-  		values(#{top_regdate},
-  			   #{top_writer},
+  		values(#{top_writer},
   			   #{top_title},
   			   #{top_content}
   			  )
@@ -36,7 +34,7 @@
   	</update>
   	
   	<select id="topicDelete">
-  		delete from product where top_id = #{top_id}
+  		delete from topic where top_id = #{top_id}
   	</select>
   	
   	

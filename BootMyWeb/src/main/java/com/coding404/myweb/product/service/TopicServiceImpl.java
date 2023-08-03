@@ -20,7 +20,7 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public ArrayList<TopicVO> getListAll(int top_id) {
+	public ArrayList<TopicVO> getListAll() {
 		// TODO Auto-generated method stub
 		return topicMapper.getListAll();
 	}

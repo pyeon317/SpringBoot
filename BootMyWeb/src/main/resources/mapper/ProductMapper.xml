@@ -14,7 +14,8 @@
   							prod_discount,
   							prod_purchase_yn,
   							prod_content,
-  							prod_comment
+  							prod_comment,
+  							prod_category
   							)
   		values(#{prod_enddate},
   			   #{prod_writer},
@@ -24,47 +25,64 @@
   			   #{prod_discount},
   			   #{prod_purchase_yn},
   			   #{prod_content},
-  			   #{prod_comment}
+  			   #{prod_comment},
+  			   #{prod_category}
   			  )
   	</insert>
   	
+  	<!-- 
+  		동적쿼리 if, choose, foreach문장 
+  		동적쿼리절에는 vo의 getter or map key가 전달됨
+  	-->
   	<select id="getList" resultType="ProductVO">
-	select *
-	from product
-	where prod_writer = #{writer}
-
-	<!-- 
-		동적쿼리 if, choose, foreach 문장
-		동적쿼리 절에는 vo의 getter or map key가 전달됨 
-	-->
-	<if test="cri.searchName != '' and cri.searchName != null">
-	and prod_name like concat('%',#{cri.searchName},'%')
-	</if>
-	
-	<if test="cri.searchContent != '' and cri.searchContent != null">
-	and prod_content like concat('%',#{cri.searchContent},'%')
-	</if>
-	
-	<if test="cri.startDate != '' and cri.startDate != null">
-	<![CDATA[and prod_enddate >=#{cri.startDate}]]>
-	</if>
-	
-	<if test="cri.endDate != '' and cri.endDate != null">
-	
-	<![CDATA[and prod_enddate <=#{cri.endDate}]]>
-	</if>
-	
-	order by
-	<if test="cri.searchPrice == 'asc' ">
-		prod_price asc, 
-	</if>
-	
-	<if test="cri.searchPrice == 'desc' ">
-		prod_price desc,
-	</if>
-	
-	prod_id desc
-	limit #{cri.pageStart}, #{cri.amount}
+  		select *
+  		from product a
+  		left join (SELECT CONCAT(A1.group_ID, A1.CATEGORY_ID) AS CATEGORY_KEY, ##카테고리 키 (그룹 + 키 형태로 카테고리분류)
+						   CASE A1.category_parent_LV
+								WHEN 0 THEN A1.category_detail_NM
+								WHEN 1 THEN CONCAT(A2.category_detail_NM,' > ', A1.category_detail_NM)
+								WHEN 2 THEN CONCAT(A3.category_detail_NM, ' > ', A2.category_detail_NM,' > ', A1.category_detail_NM)
+						   END as CATEGORY_NAV
+					FROM product_category A1
+					LEFT OUTER JOIN product_category A2
+					ON A1.CATEGORY_PARENT_LV = A2.CATEGORY_LV AND A1.CATEGORY_DETAIL_PARENT_LV = A2.CATEGORY_DETAIL_LV AND A1.GROUP_ID = A2.GROUP_ID
+					LEFT OUTER JOIN product_category A3
+					ON A2.CATEGORY_PARENT_LV = A3.CATEGORY_LV AND A2.CATEGORY_DETAIL_PARENT_LV = A3.CATEGORY_DETAIL_LV
+					ORDER BY CATEGORY_NAV ASC
+  				   ) b
+  		on a.prod_category = b.category_key 
+  		where prod_writer = #{writer}
+  		
+  		<if test="cri.searchName != '' and cri.searchName != null ">
+  		and prod_name like concat('%', #{cri.searchName}, '%')
+  		</if>
+  		<if test="cri.searchContent != '' and cri.searchContent != null ">
+		and prod_content like concat('%', #{cri.searchContent}, '%')
+		</if>
+		<if test="cri.startDate != '' and cri.startDate != null ">
+		<![CDATA[ and prod_enddate >= #{cri.startDate} ]]>
+		</if>
+		<if test="cri.endDate != '' and cri.endDate != null ">
+		<![CDATA[ and prod_enddate <= #{cri.endDate} ]]>
+		</if>
+  		<!-- 
+  		<choose>
+  		  	<when test=""></when>
+  		  	<when test=""></when>
+  		  	<when test=""></when>
+  		  	<otherwise></otherwise>
+  		</choose>
+  		 -->
+  		
+  		order by 
+  		<if test="cri.searchPrice == 'asc' ">
+  			prod_price asc, 
+  		</if>
+  		<if test="cri.searchPrice == 'desc' ">
+  			prod_price desc,
+  		</if>
+  		prod_id desc
+  		limit #{cri.pageStart}, #{cri.amount}
   	</select>
   	
   	<select id="getTotal" resultType="int">
@@ -77,7 +95,23 @@
   	
   	
   	<select id="getDetail" resultType="ProductVO">
-  		select * from product where prod_id = #{prod_id}
+  		select *
+  		from product a
+  		left join (SELECT CONCAT(A1.group_ID, A1.CATEGORY_ID) AS CATEGORY_KEY, ##카테고리 키 (그룹 + 키 형태로 카테고리분류)
+						   CASE A1.category_parent_LV
+								WHEN 0 THEN A1.category_detail_NM
+								WHEN 1 THEN CONCAT(A2.category_detail_NM,' > ', A1.category_detail_NM)
+								WHEN 2 THEN CONCAT(A3.category_detail_NM, ' > ', A2.category_detail_NM,' > ', A1.category_detail_NM)
+						   END as CATEGORY_NAV
+					FROM product_category A1
+					LEFT OUTER JOIN product_category A2
+					ON A1.CATEGORY_PARENT_LV = A2.CATEGORY_LV AND A1.CATEGORY_DETAIL_PARENT_LV = A2.CATEGORY_DETAIL_LV AND A1.GROUP_ID = A2.GROUP_ID
+					LEFT OUTER JOIN product_category A3
+					ON A2.CATEGORY_PARENT_LV = A3.CATEGORY_LV AND A2.CATEGORY_DETAIL_PARENT_LV = A3.CATEGORY_DETAIL_LV
+					ORDER BY CATEGORY_NAV ASC
+  				   ) b
+  		on a.prod_category = b.category_key
+  		where prod_id = #{prod_id}
   	</select>
   	
 	<update id="productUpdate">
@@ -97,6 +131,22 @@
   	<delete id="productDelete">
   		delete from product where prod_id = #{prod_id}
   	</delete>
+  	
+  	<!-- 카테고리처리 -->
+  	<select id="getCategory" resultType="CategoryVO">
+  		select *
+  		from product_category 
+  		where category_lv = 1
+  	</select>
+  	
+  	<select id="getCategoryChild" resultType="CategoryVO">
+  		select *
+  		from product_category
+  		where group_id = #{group_id} 
+  		and category_parent_lv = #{category_lv}
+  		and category_detail_parent_lv = #{category_detail_lv}
+  	</select>
+  		
   	
   	
   	
